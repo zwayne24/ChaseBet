@@ -63,7 +63,7 @@ standings['W'] = standings['W'].astype(int)
 standings['L'] = standings['L'].astype(int)
 standings['PCT'] = standings['PCT'].astype(float)
 standings['On Track For'] = standings['PCT'] * 82
-standings = standings.sort_values(by='Team', ascending=False)#.drop(columns=['PCT'])
+standings = standings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
 
 chasesStandings = standings[standings['Team'].isin(ChasesTeams)].reset_index(drop=True)
 chasesStandings['O/U'] =  [f'Over {bet}' for bet in ChaseBet]
@@ -83,15 +83,22 @@ chaseStandingsMobile = chasesStandings.copy()
 
 
 chaseStandingsMobile['Team'] = chaseStandingsMobile['Team'].map(teamToAbbr)
+chaseStandingsMobile['O/U'] =  [f'Over {bet}' for bet in ChaseBet]
+chaseStandingsMobile['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], ChaseBet)]
 
-
-chaseStandingsMobile = chaseStandingsMobile[['Team', 'W','L','PCT','On Track For']]
+chaseStandingsMobile = chaseStandingsMobile[['Team', 'W','L','PCT','On Track For','O/U','Color']]
 
 html_table = "<table><thead><tr><th>Team</th><th>W</th><th>L</th><th>PCT</th><th>On Track For</th><th>O/U</th></tr></thead><tbody>"
 for i, row in chasesStandings.iterrows():
     html_table += f"<tr><td>{row['Team']}</td><td>{row['W']}</td><td>{row['L']}</td><td>{row['PCT']:.0f}</td>"
     html_table += f"<td style='color: {row['Color']}'>{row['On Track For']:.0f}</td><td>{row['O/U']}</td></tr>"
 html_table += "</tbody></table>"
+
+html_table_mobile = "<table><thead><tr><th>Team</th><th>W</th><th>L</th><th>PCT</th><th>On Track For</th><th>O/U</th></tr></thead><tbody>"
+for i, row in chaseStandingsMobile.iterrows():
+    html_table_mobile += f"<tr><td>{row['Team']}</td><td>{row['W']}</td><td>{row['L']}</td><td>{row['PCT']:.0f}</td>"
+    html_table_mobile += f"<td style='color: {row['Color']}'>{row['On Track For']:.0f}</td><td>{row['O/U']}</td></tr>"
+html_table_mobile += "</tbody></table>"
 
 # Generate HTML content
 html_content = f"""
@@ -110,7 +117,7 @@ html_content = f"""
     h1 {{
         text-align: center;
         color: Green;
-        font-size: 60px;
+        font-size: 50px;
     }}
 
     table {{
@@ -245,7 +252,7 @@ html_content = f"""
                     {html_table}
                 </div>
                 <div class="table-container2">
-                    {chaseStandingsMobile.to_html(index=False)}
+                    {html_table_mobile}
                 </div>
             </div>
         </div>
