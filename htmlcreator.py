@@ -90,7 +90,7 @@ chaseStandingsMobile = chaseStandingsMobile[['Team', 'W','L','PCT','On Track For
 
 html_table = "<table><thead><tr><th>Team</th><th>W</th><th>L</th><th>PCT</th><th>On Track For</th><th>O/U</th></tr></thead><tbody>"
 for i, row in chasesStandings.iterrows():
-    html_table += f"<tr><td>{row['Team']}</td><td>{row['W']}</td><td>{row['L']}</td><td>{row['PCT']:.0f}</td>"
+    html_table += f"<tr><td>{row['Team']}</td><td>{row['W']}</td><td>{row['L']}</td><td>{row['PCT']:.2f}</td>"
     html_table += f"<td style='color: {row['Color']}'>{row['On Track For']:.0f}</td><td>{row['O/U']}</td></tr>"
 html_table += "</tbody></table>"
 
@@ -107,7 +107,7 @@ html_content = f"""
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA Standings</title>
+    <title>Chase Bet</title>
     <style>
     /* Existing styles */
     body {{
