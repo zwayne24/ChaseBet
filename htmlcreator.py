@@ -63,11 +63,12 @@ standings['W'] = standings['W'].astype(int)
 standings['L'] = standings['L'].astype(int)
 standings['PCT'] = standings['PCT'].astype(float)
 standings['On Track For'] = standings['PCT'] * 82
-standings = standings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
+#standings = standings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
 
 chasesStandings = standings[standings['Team'].isin(ChasesTeams)].reset_index(drop=True)
 chasesStandings['O/U'] =  [f'Over {bet}' for bet in ChaseBet]
 chasesStandings['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], ChaseBet)]
+chasesStandings = chasesStandings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
 chasesStandings.index += 1
 
 teamToAbbr = {
