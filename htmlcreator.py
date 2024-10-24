@@ -60,7 +60,7 @@ ChasesTeams = ['Phoenix Suns', 'Orlando Magic', 'Oklahoma City Thunder', 'Los An
 ChaseBet = [47.5,47.5,57.5,42.5,51.5,42.5,43.5,48.5,58.5]
 chaseB = pd.DataFrame({'Team': ChasesTeams, 'Bet': ChaseBet})
 # ordeer by team asc
-chaseB = chaseB.sort_values(by='Team', ascending=True)
+chaseB = chaseB.sort_values(by='Bet', ascending=False)
 # Process standings data
 standings['W'] = standings['W'].astype(int)
 standings['L'] = standings['L'].astype(int)
@@ -68,14 +68,17 @@ standings['PCT'] = standings['PCT'].astype(float)
 standings['On Track For'] = standings['PCT'] * 82
 #standings = standings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
 
-chasesStandings = standings[standings['Team'].isin(ChasesTeams)].reset_index(drop=True)
-# order team like in ChasesTeams so that team is in the same order
-chasesStandings['Team'] = chaseB['Team']
-chasesStandings = chasesStandings.sort_values('Team')
-
+chasesStandings = pd.DataFrame(columns=['Team', 'W', 'L', 'PCT', 'On Track For', 'O/U', 'Color'])
+chaseteams = chaseB['Team'].tolist()
+chasesStandings['Team'] = chaseteams
 chasesStandings['O/U'] =  [f'Over {bet}' for bet in chaseB['Bet']]
+for team in chaseteams:
+    chasesStandings.loc[chasesStandings['Team'] == team, 'W'] = standings.loc[standings['Team'] == team, 'W'].values[0]
+    chasesStandings.loc[chasesStandings['Team'] == team, 'L'] = standings.loc[standings['Team'] == team, 'L'].values[0]
+    chasesStandings.loc[chasesStandings['Team'] == team, 'PCT'] = standings.loc[standings['Team'] == team, 'PCT'].values[0]
+    chasesStandings.loc[chasesStandings['Team'] == team, 'On Track For'] = standings.loc[standings['Team'] == team, 'On Track For'].values[0]
 chasesStandings['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], ChaseBet)]
-chasesStandings = chasesStandings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
+chasesStandings = chasesStandings.sort_values(by='O/U', ascending=False)#.drop(columns=['PCT'])
 chasesStandings.index += 1
 
 teamToAbbr = {
