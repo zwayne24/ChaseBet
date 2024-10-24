@@ -91,7 +91,7 @@ chaseStandingsMobile = chasesStandings.copy()
 
 
 chaseStandingsMobile['Team'] = chaseStandingsMobile['Team'].map(teamToAbbr)
-chaseStandingsMobile['O/U'] =  [f'Over {bet}' for bet in ChaseBet]
+chaseStandingsMobile['O/U'] =  [f'Over {bet}' for bet in chaseB['Bet']]
 chaseStandingsMobile['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], ChaseBet)]
 
 chaseStandingsMobile = chaseStandingsMobile[['Team', 'W','L','PCT','On Track For','O/U','Color']]
