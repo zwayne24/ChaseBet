@@ -58,6 +58,9 @@ for team in soup.find_all('tr', class_='filled Table__TR Table__TR--sm Table__ev
 # Define team lists for Chase, Bryce, and Zach
 ChasesTeams = ['Phoenix Suns', 'Orlando Magic', 'Oklahoma City Thunder', 'Los Angeles Lakers', 'Minnesota Timberwolves','Houston Rockets', 'Golden State Warriors','Cleveland Cavaliers','Boston Celtics']
 ChaseBet = [47.5,47.5,57.5,42.5,51.5,42.5,43.5,48.5,58.5]
+chaseB = pd.DataFrame({'Team': ChasesTeams, 'Bet': ChaseBet})
+# ordeer by team asc
+chaseB = chaseB.sort_values(by='Team', ascending=True)
 # Process standings data
 standings['W'] = standings['W'].astype(int)
 standings['L'] = standings['L'].astype(int)
@@ -66,7 +69,11 @@ standings['On Track For'] = standings['PCT'] * 82
 #standings = standings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
 
 chasesStandings = standings[standings['Team'].isin(ChasesTeams)].reset_index(drop=True)
-chasesStandings['O/U'] =  [f'Over {bet}' for bet in ChaseBet]
+# order team like in ChasesTeams so that team is in the same order
+chasesStandings['Team'] = chaseB['Team']
+chasesStandings = chasesStandings.sort_values('Team')
+
+chasesStandings['O/U'] =  [f'Over {bet}' for bet in chaseB['Bet']]
 chasesStandings['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], ChaseBet)]
 chasesStandings = chasesStandings.sort_values(by='Team', ascending=True)#.drop(columns=['PCT'])
 chasesStandings.index += 1
