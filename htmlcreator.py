@@ -107,7 +107,7 @@ html_table += "</tbody></table>"
 
 html_table_mobile = "<table><thead><tr><th>Team</th><th>W</th><th>L</th><th>PCT</th><th>On Track For</th><th>O/U</th></tr></thead><tbody>"
 for i, row in chaseStandingsMobile.iterrows():
-    html_table_mobile += f"<tr><td>{row['Team']}</td><td>{row['W']}</td><td>{row['L']}</td><td>{row['PCT']:.0f}</td>"
+    html_table_mobile += f"<tr><td>{row['Team']}</td><td>{row['W']}</td><td>{row['L']}</td><td>{row['PCT']:.2f}</td>"
     html_table_mobile += f"<td style='color: {row['Color']}'>{row['On Track For']:.0f}</td><td>{row['O/U']}</td></tr>"
 html_table_mobile += "</tbody></table>"
 
