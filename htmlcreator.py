@@ -77,7 +77,7 @@ for team in chaseteams:
     chasesStandings.loc[chasesStandings['Team'] == team, 'L'] = standings.loc[standings['Team'] == team, 'L'].values[0]
     chasesStandings.loc[chasesStandings['Team'] == team, 'PCT'] = standings.loc[standings['Team'] == team, 'PCT'].values[0]
     chasesStandings.loc[chasesStandings['Team'] == team, 'On Track For'] = standings.loc[standings['Team'] == team, 'On Track For'].values[0]
-chasesStandings['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], ChaseBet)]
+chasesStandings['Color'] = ['green' if track > bet else 'red' for track, bet in zip(chasesStandings['On Track For'], chaseB['Bet'])]
 chasesStandings = chasesStandings.sort_values(by='O/U', ascending=False)#.drop(columns=['PCT'])
 chasesStandings.index += 1
 
